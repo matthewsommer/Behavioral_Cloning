@@ -1,3 +1,11 @@
+#**Behavioral Cloning** 
+
+##Writeup Template
+
+###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+
+---
+
 **Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
@@ -18,13 +26,19 @@ The goals / steps of this project are the following:
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
+## Rubric Points
+###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+
 ---
+###Files Submitted & Code Quality
+
+####1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* My writeup summarizing the results are in README.md
+* writeup_report.md or writeup_report.pdf summarizing the results
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -33,6 +47,16 @@ python drive.py model.h5
 ```
 
 ####3. Submission code is usable and readable
+
+To generate a model the following shell command can be executed
+python model.py
+
+To start a daemon used to control the simulator in autonomous mode the following command can be used
+python drive.py model.h5
+
+python drive.py model.h5 run1
+
+python video.py run1 --fps 48
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
@@ -83,6 +107,40 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+
+Layer (type)                     Output Shape          Param #     Connected to                     
+====================================================================================================
+cropping2d_1 (Cropping2D)        (None, 70, 320, 3)    0           cropping2d_input_2[0][0]         
+____________________________________________________________________________________________________
+lambda_1 (Lambda)                (None, 70, 320, 3)    0           cropping2d_1[0][0]               
+____________________________________________________________________________________________________
+convolution2d_1 (Convolution2D)  (None, 33, 158, 24)   1824        lambda_1[0][0]                   
+____________________________________________________________________________________________________
+convolution2d_2 (Convolution2D)  (None, 15, 77, 36)    21636       convolution2d_1[0][0]            
+____________________________________________________________________________________________________
+convolution2d_3 (Convolution2D)  (None, 6, 37, 48)     43248       convolution2d_2[0][0]            
+____________________________________________________________________________________________________
+convolution2d_4 (Convolution2D)  (None, 4, 35, 64)     27712       convolution2d_3[0][0]            
+____________________________________________________________________________________________________
+convolution2d_5 (Convolution2D)  (None, 2, 33, 64)     36928       convolution2d_4[0][0]            
+____________________________________________________________________________________________________
+flatten_1 (Flatten)              (None, 4224)          0           convolution2d_5[0][0]            
+____________________________________________________________________________________________________
+dense_1 (Dense)                  (None, 100)           422500      flatten_1[0][0]                  
+____________________________________________________________________________________________________
+dropout_1 (Dropout)              (None, 100)           0           dense_1[0][0]                    
+____________________________________________________________________________________________________
+dense_2 (Dense)                  (None, 50)            5050        dropout_1[0][0]                  
+____________________________________________________________________________________________________
+dense_3 (Dense)                  (None, 10)            510         dense_2[0][0]                    
+____________________________________________________________________________________________________
+dense_4 (Dense)                  (None, 1)             11          dense_3[0][0]                    
+====================================================================================================
+Total params: 559,419
+Trainable params: 559,419
+Non-trainable params: 0
+____________________________________________________________________________________________________
+
 
 ![alt text][image1]
 
