@@ -6,10 +6,11 @@ import sklearn
 
 from keras.models import load_model
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Cropping2D
+from keras.layers import Flatten, Dense, Lambda, Cropping2D, Dropout
 from keras.layers.convolutional import Convolution2D
 from sklearn.model_selection import train_test_split
 
+# Set constants for local file paths
 model_file_path = 'model.h5'
 data_csv_file_path = 'data/driving_log.csv'
 
@@ -31,7 +32,7 @@ train_samples, validation_samples = train_test_split(lines, test_size=0.2)
 
 print(len(train_samples))
 
-
+# Generator used to pull data as needed instead of loading all into memory (saves memory)
 def generator(samples, batch_size=128):
     num_samples = len(samples)
     while 1:
@@ -60,8 +61,13 @@ def generator(samples, batch_size=128):
 images = []
 measurements = []
 
+#Use the generator to reduce peak memory usage
 train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
+
+loss = 'mse'
+optimizer = 'adam'
+keep_prob = 0.5
 
 model = Sequential()
 
@@ -78,13 +84,14 @@ model.add(Convolution2D(64, 3, 3, activation='relu'))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 model.add(Flatten())
 model.add(Dense(100, activation='relu'))
+model.add(Dropout(keep_prob))
 model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(1, activation='tanh'))
 
 model.summary()
 
-model.compile(loss='mse', optimizer='adam')
+model.compile(loss=loss, optimizer=optimizer)
 
 model.fit_generator(train_generator, len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=3)
 
