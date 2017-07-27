@@ -68,6 +68,7 @@ validation_generator = generator(validation_samples, batch_size=32)
 loss = 'mse'
 optimizer = 'adam'
 keep_prob = 0.5
+epochs = 5
 
 model = Sequential()
 
@@ -93,6 +94,6 @@ model.summary()
 
 model.compile(loss=loss, optimizer=optimizer)
 
-model.fit_generator(train_generator, len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=3)
+model.fit_generator(train_generator, len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=epochs)
 
 model.save(model_file_path)
