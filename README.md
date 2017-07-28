@@ -63,6 +63,11 @@ cases of tight turns or odd objects on the sides of the roads on particular turn
 that taught the car to correct when going off course, but made sure to not use training data that would teach bad behaviour like 
 driving off the track.
 
+Below is a graph of steering angles in the training data. To improve the training I could truncate the training 
+data so there is a standard deviation of 0 and mean of 0.
+
+![Graph of distribution of steering angles](Figure_1.png "Graph of distribution of steering angles")
+
 Once I got plenty of training data the car was easily able to drive around the track without running off the road.
 
 Here is a visualization of the architecture
